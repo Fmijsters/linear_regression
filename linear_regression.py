@@ -2,7 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 #supressing the scientific output
 np.set_printoptions(suppress=True) 
-data = np.loadtxt("ajax1516.txt",dtype=np.float64,delimiter=",")
+data = np.loadtxt("statsdefajax.txt",dtype=np.float64,delimiter=",")
 # print(data)
 X = data[::,0:12]
 Y = data[::,-1:]
