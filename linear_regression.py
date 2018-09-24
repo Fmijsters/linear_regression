@@ -41,12 +41,6 @@ def gradientDescent(X_bias,Y,Theta,iterations,alpha):
 
         cost_log = np.append(cost_log,cost(X_bias,Y,Theta))
         count = count + 1
-    # print(Theta)
-    plt.plot(np.linspace(1,iterations,iterations,endpoint=True),cost_log)
-    plt.title("Iteration vs Cost graph ")
-    plt.xlabel("Number of iteration")
-    plt.ylabel("Cost of Theta")
-    # plt.show()
     return Theta
 
 alpha = 0.3
