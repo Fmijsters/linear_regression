@@ -3,8 +3,8 @@ import matplotlib.pyplot as plt
 # number_of_parameters = 13
 number_of_parameters = 26
 np.set_printoptions(suppress=True) 
-# filename = "ajax1516.txt"
-filename = "ajax1718.txt"
+# filename = "data/ajax1516.txt"
+filename = "data/ajax1718.txt"
 data = np.loadtxt(filename,dtype=np.float64,delimiter=",")
 X = data[::,0:number_of_parameters-1]
 Y = data[::,-1:]
@@ -58,8 +58,8 @@ total = 0.0
 
 for x in range(1):
 	
-	alpha = 0.3
-	iterations = 100
+	alpha = 0.01
+	iterations = 1000
 	Theta = gradientDescent(X_bias,Y,Theta,iterations,alpha)
 	# print(Theta)
 	X_predict = np.array([1.0,180,65,6,525,2.3,0.8,1.5,0,0,0.8,0,2,2,5.2,3.2,2.5,2,0.2,2.8,3.7,55.3,78.3,2,4,1])
