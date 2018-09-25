@@ -1,10 +1,13 @@
 import numpy as np
 import matplotlib.pyplot as plt
+import csv
 # number_of_parameters = 13
-number_of_parameters = 26
+# number_of_parameters = 26
+number_of_parameters = 5
 np.set_printoptions(suppress=True) 
 # filename = "data/ajax1516.txt"
-filename = "data/ajax1718.txt"
+# filename = "data/ajax1718.txt"
+filename = "data/netflixdata.txt"
 data = np.loadtxt(filename,dtype=np.float64,delimiter=",")
 X = data[::,0:number_of_parameters-1]
 Y = data[::,-1:]
@@ -58,15 +61,26 @@ total = 0.0
 
 for x in range(1):
 	
-	alpha = 0.01
-	iterations = 1000
+	alpha = 0.1
+	iterations = 100
 	Theta = gradientDescent(X_bias,Y,Theta,iterations,alpha)
 	# print(Theta)
-	X_predict = np.array([1.0,180,65,6,525,2.3,0.8,1.5,0,0,0.8,0,2,2,5.2,3.2,2.5,2,0.2,2.8,3.7,55.3,78.3,2,4,1])
+	# X_predict = np.array([1.0,180,65,6,525,2.3,0.8,1.5,0,0,0.8,0,2,2,5.2,3.2,2.5,2,0.2,2.8,3.7,55.3,78.3,2,4,1])
 	# X_predict = np.array([1.0,179,65,21,1791,1,5,3,0,0.5,84.7,1.1,1]) 
-	for x in range(1,number_of_parameters):
-		X_predict[x] = (X_predict[x] - mean_array[x-1])/ (std_array[x-1]) 
-	hypothesis = X_predict.dot(Theta.transpose())
+
+	with open('data/needpredicting.txt') as csvfile:
+		smartreader = csv.DictReader(csvfile)
+		f = open("data/predictedmovies.txt", "w")
+		teller = 1
+		for row in smartreader:
+			if row["number"] is None or row["sex"]is None or ["proffesion"]is None or row["age"] is None or row["release"] is None:
+				print(str(teller) + " this is none")
+				continue
+			X_predict = np.array([int(row["number"]),int(row["sex"]),int(row["proffesion"]),int(row["age"]),int(row["release"])]) 
+			# print(row)
+			for x in range(1,number_of_parameters):
+				X_predict[x] = (X_predict[x] - mean_array[x-1])/ (std_array[x-1]) 
+			hypothesis = X_predict.dot(Theta.transpose())
 	# print(hypothesis[0])
-	total = total + hypothesis[0]
-print("player on line 26 we think is ",total/1)
+			f.write("movie on line "+str(teller)+" we think is " + str(hypothesis[0]) + "\n")
+			teller = teller +1
