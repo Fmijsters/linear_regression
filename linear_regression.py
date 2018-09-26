@@ -2,16 +2,17 @@ import numpy as np
 import matplotlib.pyplot as plt
 import csv
 # number_of_parameters = 13
-# number_of_parameters = 26
-number_of_parameters = 5
+number_of_parameters = 30
+# number_of_parameters = 5
 np.set_printoptions(suppress=True) 
 # filename = "data/ajax1516.txt"
 # filename = "data/ajax1718.txt"
-filename = "data/netflixdata.txt"
+filename = "data/wholeAjaxEredivisie.txt"
+# filename = "data/netflixdata.txt"
 data = np.loadtxt(filename,dtype=np.float64,delimiter=",")
 X = data[::,0:number_of_parameters-1]
 Y = data[::,-1:]
-
+print(Y)
 Theta = np.random.rand(1,number_of_parameters)
 m,n = X.shape
 print(m,n)
@@ -58,29 +59,35 @@ def gradientDescent(X_bias,Y,Theta,iterations,alpha):
     return Theta
 
 total = 0.0
+def predict(X_predict):
+	for x in range(1,number_of_parameters):
+		X_predict[x] = (X_predict[x] - mean_array[x-1])/ (std_array[x-1]) 
+	hypothesis = X_predict.dot(Theta.transpose())
+	print("We think the value for the specified data is: " + str(hypothesis[0]))
+
 
 for x in range(1):
 	
-	alpha = 0.1
-	iterations = 100
+	alpha = 0.01
+	iterations = 100000
 	Theta = gradientDescent(X_bias,Y,Theta,iterations,alpha)
 	# print(Theta)
 	# X_predict = np.array([1.0,180,65,6,525,2.3,0.8,1.5,0,0,0.8,0,2,2,5.2,3.2,2.5,2,0.2,2.8,3.7,55.3,78.3,2,4,1])
+	X_predict = np.array([1.0,177,78,27,2350,10,3,6,0,1.9,87,1.9,2,2.1,1.3,0.9,0,1,1.1,0.2,0,1.4,1,0,1,1.2,56.1,0.9,1.7,0.1])
 	# X_predict = np.array([1.0,179,65,21,1791,1,5,3,0,0.5,84.7,1.1,1]) 
 
-	with open('data/needpredicting.txt') as csvfile:
-		smartreader = csv.DictReader(csvfile)
-		f = open("data/predictedmovies.txt", "w")
-		teller = 1
-		for row in smartreader:
-			if row["number"] is None or row["sex"]is None or ["proffesion"]is None or row["age"] is None or row["release"] is None:
-				print(str(teller) + " this is none")
-				continue
-			X_predict = np.array([int(row["number"]),int(row["sex"]),int(row["proffesion"]),int(row["age"]),int(row["release"])]) 
-			# print(row)
-			for x in range(1,number_of_parameters):
-				X_predict[x] = (X_predict[x] - mean_array[x-1])/ (std_array[x-1]) 
-			hypothesis = X_predict.dot(Theta.transpose())
+	# with open('data/needpredicting.txt') as csvfile:
+	# 	smartreader = csv.DictReader(csvfile)
+	# 	f = open("data/predictedmovies.txt", "w")
+	# 	teller = 1
+	# 	for row in smartreader:
+	# 		if row["number"] is None or row["sex"]is None or ["proffesion"]is None or row["age"] is None or row["release"] is None:
+	# 			print(str(teller) + " this is none")
+	# 			continue
+	# 		X_predict = np.array([int(row["number"]),int(row["sex"]),int(row["proffesion"]),int(row["age"]),int(row["release"])]) 
+	# 		# print(row)
+	# X_predict = np.array([int(row["number"]),int(row["sex"]),int(row["proffesion"]),int(row["age"]),int(row["release"])]) 
+	predict(X_predict)
 	# print(hypothesis[0])
-			f.write("movie on line "+str(teller)+" we think is " + str(hypothesis[0]) + "\n")
-			teller = teller +1
+			# f.write("movie on line "+str(teller)+" we think is " + str(hypothesis[0]) + "\n")
+			# teller = teller +1
